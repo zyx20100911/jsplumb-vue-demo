@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-      title="新增参数"
+      :title="title"
       v-if="dialogVisible"
       :visible.sync="dialogVisible"
       width="30%"
@@ -47,6 +47,7 @@
 
 <script>
 import methods from "@/views/config/methods";
+import {GenNonDuplicateID} from "@/common/until";
 
 export default {
   name: "add",
@@ -57,28 +58,49 @@ export default {
         name:[{}]
       },
       form:{
+        id:'',
         name:'',
         expression:'=', // 判断条件
         value:''
-      }
+      },
+      type:'',
+      title:''
     }
   },
   methods:{
-    init(){
+    init(type,data){
       this.dialogVisible = true
-      this.form={
-        name:'',
-        expression:'=', // 判断条件
-        value:''
+      this.type = type
+      if(type === 'add'){
+        this.title='新增参数'
+        this.form={
+          id:'',
+          name:'',
+          expression:'=', // 判断条件
+          value:''
+        }
+      }
+      if(type==='edit'){
+        this.title='修改参数'
+        this.form = data
       }
     },
     cancel(){
       this.dialogVisible = false
     },
     submit(){
-      const data = this.form
-      this.$emit('add',data)
-      this.dialogVisible = false
+      if(this.type==='add'){
+        this.form.id = GenNonDuplicateID(6)
+        const data = this.form
+        this.$emit('add',data)
+        this.dialogVisible = false
+      }
+      if(this.type==='edit'){
+        const data = this.form
+        this.$emit('edit',data)
+        this.dialogVisible = false
+      }
+
     }
   }
 }

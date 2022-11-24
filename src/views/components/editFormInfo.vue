@@ -23,7 +23,7 @@
 <!--          <el-tag>参数</el-tag>-->
           <div>
             <el-button size="mini" @click="addParmas" type="primary">新增</el-button>
-<!--            <el-button size="mini" @click="useParmas" type="">配置</el-button>-->
+            <el-button size="mini" @click="editParmas" type="">编辑</el-button>
             <el-button size="mini" @click="delParmas" type="danger">删除</el-button>
           </div>
         </div>
@@ -135,12 +135,12 @@
     <el-button @click="cancel">取 消</el-button>
     <el-button type="primary" @click="submit">确 定</el-button>
   </span>
-    <addParmas ref="addParmasRef" @add="addParmastoList"></addParmas>
+    <parmasFormInfo ref="parmasFormInfoRef" @add="addParmastoList" @edit="editParmastoList"></parmasFormInfo>
   </el-dialog>
 </template>
 
 <script>
-import addParmas from "@/views/components/addParmas";
+import parmasFormInfo from "@/views/components/parmasFormInfo";
 import select from "view-design/src/components/select";
 export default {
 name: "editFormInfo",
@@ -160,7 +160,7 @@ name: "editFormInfo",
     }
   },
   components:{
-    addParmas
+    parmasFormInfo
   },
   methods:{
   init(data){
@@ -174,10 +174,17 @@ name: "editFormInfo",
     },
 
     addParmas(){
-      this.$refs.addParmasRef.init()
+      this.$refs.parmasFormInfoRef.init('add')
     },
     addParmastoList(data){
     this.topTable.push(data) // 追加到table中
+    },
+    editParmastoList(data){ // 表单中修改的数据，需要传到列表中
+      this.topTable.forEach(i=>{
+        if (i.id === data.id){
+          i = data
+        }
+      })
     },
     addTransit(){
      // 追加一行
@@ -197,7 +204,6 @@ name: "editFormInfo",
     // 中转数据表 行内数据保存
     confirmEdit(row){
       row.edit = false
-
     },//
 
 
@@ -207,17 +213,16 @@ name: "editFormInfo",
     handleSelectionChange_transit(val){
     this.selectTransitions = val
     },
-   /* useParmas(){
+    editParmas(){
     if(this.selectParames.length!==1){
-      this.$message.warning('只能使用一项参数')
+      this.$message.warning('一次只能编辑一项参数')
     }else{
       // todo: 逻辑代码
-      const data = this.selectParames
-      this.$emit('useParma',data)
-      this.$message.success('使用成功')
-      this.dialogVisible = false
+      const data= this.selectParames[0] // 选中，需要编辑的那一项
+      this.$refs.parmasFormInfoRef.init('edit',data)
+
     }
-    },*/
+    },
     del(delList,dataList,type){
       delList.forEach((d)=>{
         dataList.forEach((i,index)=>{
