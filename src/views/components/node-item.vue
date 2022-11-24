@@ -19,7 +19,7 @@
       <div class="node-anchor anchor-right" v-show="mouseEnter"></div>
       <div class="node-anchor anchor-bottom" v-show="mouseEnter"></div>
       <div class="node-anchor anchor-left" v-show="mouseEnter"></div>-->
-    <editFormInfo ref="editFormInfo" @useParma="addData"></editFormInfo>
+    <editFormInfo ref="editFormInfo" @setNodeData="setNodeData"></editFormInfo>
   </div>
 </template>
 
@@ -55,6 +55,9 @@ export default {
       isSelected: false
     };
   },
+  mounted() {
+    console.log(this.node);
+  },
   methods: {
     showAnchor() {
       this.mouseEnter = true
@@ -84,13 +87,9 @@ export default {
         minWidth: 180
       })
     },
-    addData(data){
+    setNodeData(data){
       this.node.data = data
-      console.log(data);
-      //data.name + data.expression +data.value
-      const nameList =  data.map(i=>i.name +i.expression+i.value)
-      const newName = nameList.join(",")
-      this.$emit('setNodeName', this.node.id, newName)
+      this.$emit('setNodeName', this.node.id, data.nodeName)
 
     },
     setActive() {
@@ -118,8 +117,8 @@ export default {
       this.$emit('add', this.node.id, this.node)
     },
     editNode() {
-      this.newNodeName = this.node.nodeName
-      this.$refs.editFormInfo.init()
+       this.newNodeName = this.node.nodeName
+      this.$refs.editFormInfo.init(this.node.data)
     /*  this.$Modal.confirm({
         render: (h) => {
           return h('form', {
