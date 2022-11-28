@@ -9,16 +9,24 @@
   >
     <el-form ref="form" :model="form" label-width="80px">
       <el-row :gutter="20">
-        <el-form-item label="参数名称">
-        <el-col :span="24">
-            <el-input v-model="form.name"></el-input>
+        <el-col :span="10">
+          <el-form-item label="参数来源">
+            <el-select v-model="form.source" placeholder="请选择">
+              <el-option label="客户表" value="客户表"></el-option>
+              <el-option label="中转表" value="中转表"></el-option>
+            </el-select >
+          </el-form-item>
         </el-col>
-        </el-form-item>
+        <el-col :span="14">
+          <el-form-item label="参数名称">
+            <el-input v-model="form.name"></el-input>
+          </el-form-item>
+        </el-col>
       </el-row>
       <el-row  :gutter="20">
 
+        <el-col :span="8">
           <el-form-item label="判断条件">
-            <el-col :span="8">
             <el-select v-model="form.expression" placeholder="请选择">
               <el-option label="等于=" value="="></el-option>
               <el-option label="不等于!=" value="!="></el-option>
@@ -28,15 +36,12 @@
               <el-option label="小于等于<=" value="<="></el-option>
               <el-option label="选项[]" value="选项[]"></el-option>
             </el-select >
-            </el-col>
-            <el-col :span="16">
-              <el-input v-model="form.value"></el-input>
-            </el-col>
-
           </el-form-item>
+        </el-col>
+        <el-col :span="16">
+          <el-input v-model="form.value"></el-input>
+        </el-col>
       </el-row>
-
-
     </el-form>
     <span slot="footer" class="dialog-footer">
     <el-button @click="cancel">取 消</el-button>
@@ -46,7 +51,6 @@
 </template>
 
 <script>
-import methods from "@/views/config/methods";
 import {GenNonDuplicateID} from "@/common/until";
 
 export default {
@@ -61,7 +65,8 @@ export default {
         id:'',
         name:'',
         expression:'=', // 判断条件
-        value:''
+        value:'',
+        source:'' //来源 下拉框的值
       },
       type:'',
       title:''
@@ -77,7 +82,8 @@ export default {
           id:'',
           name:'',
           expression:'=', // 判断条件
-          value:''
+          value:'',
+          source:''
         }
       }
       if(type==='edit'){

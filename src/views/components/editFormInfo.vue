@@ -39,6 +39,11 @@
               width="55">
           </el-table-column>
           <el-table-column
+              prop="source"
+              label="参数来源"
+              width="180">
+          </el-table-column>
+          <el-table-column
               prop="name"
               label="参数名称"
               width="180">

@@ -18,7 +18,7 @@
         ></flowNode>
       </div>
     </div>
-    <div style="height: 80vh;">
+    <div style="height: 80vh;" v-if="false">
       <el-button @click="getAllData">获取数据</el-button>
       <el-input  type="textarea" v-model="allData"></el-input>
     </div>
